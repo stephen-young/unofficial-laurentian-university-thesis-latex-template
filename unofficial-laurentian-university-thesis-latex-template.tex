@@ -1,0 +1,283 @@
+\documentclass[openany, 12pt]{book}
+
+% PACKAGE IMPORTS
+\usepackage{import}
+\usepackage{titling}
+\usepackage[letterpaper, margin=1in]{geometry}
+\usepackage{setspace}
+\usepackage{nomencl}
+\usepackage{newfloat}
+\usepackage{tocloft}
+\usepackage{fancyhdr}
+\usepackage{booktabs}
+\usepackage{graphicx}
+\usepackage{titlesec}
+\usepackage{natbib}
+\usepackage{amsmath}
+\usepackage{caption}
+
+% DOCUMENT SETTINGS AND MACROS
+
+% Thesis properties
+\newcommand{\givenname}{Stephen}
+\newcommand{\surname}{Young}
+\newcommand{\program}{Program}
+\newcommand{\programdegree}{Degree}
+\newcommand{\degreeAbbr}{Abbr.}
+\newcommand{\dateofdefence}{\today}
+\title{Unofficial Laurentian University thesis \LaTeX{} template}
+\author{\givenname\ \surname}
+
+% Paragraph settings
+\setlength{\parindent}{0pt}
+\setlength{\parskip}{12pt}
+\setlength{\headheight}{14.5pt}
+\addtolength{\topmargin}{-2.5pt}
+
+% Chapter display style
+\newcommand{\titlefont}{\bfseries\Large}
+\newcommand{\frontchap}[1]{
+    \clearpage
+    \begin{center} \titlefont #1 \end{center}
+    \addcontentsline{toc}{chapter}{#1}
+}
+\titleformat{\chapter}[display]{\titlefont}{\centering\chaptertitlename{} \thechapter}{0ex}{}[]
+\titlespacing*{\chapter}{0pt}{0pt}{0pt}
+
+% Page style settings
+\fancypagestyle{frontmatter}{
+    \fancyhf{}
+    \fancyfoot[C]{\thepage}
+    \renewcommand{\headrulewidth}{0pt}
+    \renewcommand{\footrulewidth}{0pt}
+}
+\fancypagestyle{plain}{
+    \fancyhf[R]{\thepage}
+    \fancyfoot{}
+    \renewcommand{\headrulewidth}{0pt}
+    \renewcommand{\footrulewidth}{0pt}
+}
+\tocloftpagestyle{frontmatter}
+
+% Table of contents settings
+\renewcommand{\contentsname}{Table of Contents}
+\renewcommand{\cfttoctitlefont}{\hfill\titlefont}
+\renewcommand{\cftaftertoctitle}{\hfill}
+\renewcommand{\cftchapfont}{\normalsize}
+\renewcommand{\cftchappagefont}{\normalsize}
+\renewcommand{\cftchappresnum}{\chaptername{}~}
+\renewcommand{\cftchapleader}{\cftdotfill{\cftdotsep}}
+\setlength{\cftaftertoctitleskip}{1.5em}
+\setlength{\cftchapnumwidth}{2.5cm}
+\newlength{\entrysep}
+\setlength{\entrysep}{6pt}
+\setlength{\cftbeforechapskip}{\entrysep}
+\setlength{\cftbeforesecskip}{\entrysep}
+\setlength{\cftbeforesubsecskip}{\entrysep}
+
+% List of tables settings
+\newcommand*{\loftvspace}[1]{
+    \renewcommand*{\addvspace}[1]{\vspace{#1}}
+}
+\renewcommand{\cftlottitlefont}{\hfill\titlefont}
+\renewcommand{\cftafterlottitle}{\hfill}
+\renewcommand{\cfttabpresnum}{Table~}
+\renewcommand{\cfttabaftersnum}{:}
+\setlength{\cftafterlottitleskip}{1.5em}
+\setlength{\cfttabnumwidth}{2.0cm}
+\setlength{\cftbeforetabskip}{\entrysep}
+\addtocontents{lot}{\protect\loftvspace{0pt}}
+
+% List of figures settings
+\renewcommand{\cftloftitlefont}{\hfill\titlefont}
+\renewcommand{\cftafterloftitle}{\hfill}
+\renewcommand{\cftfigpresnum}{Figure~}
+\renewcommand{\cftfigaftersnum}{:}
+\setlength{\cftafterloftitleskip}{1.5em}
+\setlength{\cftfignumwidth}{2.2cm}
+\setlength{\cftbeforefigskip}{\entrysep}
+\addtocontents{lof}{\protect\loftvspace{0pt}}
+
+% Plates environment and list of plates settings
+\newlistof{plate}{lop}{\listplatename}
+\DeclareFloatingEnvironment[
+    fileext=lop,
+    name=Plate,
+    placement=tbhp,
+    within=chapter
+]{plate}
+\renewcommand{\listplatename}{List of Plates}
+\renewcommand{\cftloptitlefont}{\hfill\titlefont}
+\renewcommand{\cftafterloptitle}{\hfill}
+\renewcommand{\cftplatepresnum}{Plate~}
+\renewcommand{\cftplateaftersnum}{:}
+\setlength{\cftafterloptitleskip}{1.5em}
+\setlength{\cftplatenumwidth}{2.0cm}
+\setlength{\cftbeforeplateskip}{\entrysep}
+\addtocontents{lop}{\protect\loftvspace{0pt}}
+
+% List of appendices settings
+\newlistof{appendices}{loa}{\listappendixname}
+\newcommand{\listappendixname}{List of Appendices}
+\renewcommand{\cftloatitlefont}{\hfill\titlefont}
+\renewcommand{\cftafterloatitle}{\hfill}
+\renewcommand{\cftappendicespresnum}{\appendixname}
+\setlength{\cftafterloatitleskip}{1.5em}
+\newcommand{\startappendices}{
+    \clearpage
+    \appendix
+    \frontchap{Appendices}
+}
+\newcommand{\newappendix}[1]{
+    \refstepcounter{appendices}
+    \refstepcounter{chapter}
+    \section*{\appendixname{} \Alph{appendices}: #1}
+    \addcontentsline{toc}{chapter}{\appendixname{} \Alph{appendices}: #1}
+    \addcontentsline{loa}{appendices}{\appendixname{} \Alph{appendices}: #1}
+}
+
+% Nomenclature settings
+\renewcommand{\nomname}{\hfill Nomenclature \hfill}
+
+\renewcommand{\nomgroup}[1]{%
+% \ifthenelse{\equal{#1}{a}}{\item[\bfseries{Roman letters}]}{% Uncomment these lines for an explicit "Roman letters" section for the nomenclature
+% \ifthenelse{\equal{#1}{A}}{\item[\bfseries{Roman letters}]}{% Matching closing braces will need to be added also.
+\ifthenelse{\equal{#1}{g}}{\item[\bfseries{Greek letters}]}{%
+\ifthenelse{\equal{#1}{G}}{\item[\bfseries{Greek letters}]}{%
+\ifthenelse{\equal{#1}{x}}{\item[\bfseries{Superscripts}]}{%
+\ifthenelse{\equal{#1}{X}}{\item[\bfseries{Superscripts}]}{%
+\ifthenelse{\equal{#1}{Z}}{\item[\bfseries{Subscripts}]}{%
+\ifthenelse{\equal{#1}{z}}{\item[\bfseries{Subscripts}]}{}}}}}}}
+\makenomenclature
+
+% List of references settings
+\renewcommand{\bibname}{\hfill References\hfill}
+\renewcommand{\bibfont}{\raggedright\singlespacing}
+\bibliographystyle{dcu}
+\setcitestyle{aysep={},citesep={,}}
+
+\captionsetup{justification=centering,font=bf}
+
+\graphicspath{{./figures/}}
+
+% THESIS DOCUMENT
+\begin{document}
+
+\import{./contents/}{frontmatter.tex}
+
+\chapter{Chapter titles use the \texttt{chapter} command}
+
+\section{First level subheading uses \texttt{section} command}
+
+A sample table is shown in table \ref{tab:sample-table}.
+Use the \texttt{booktabs} and \texttt{caption} packages for better table and caption formatting.
+
+\begin{table}
+    \centering
+    \caption{Sample table which will automatically update in List of Tables}
+    \label{tab:sample-table}
+    \import{./tables/}{tab-sample-table.tex}
+\end{table}
+
+\subsection{Second level subheading uses \texttt{subsection} command}
+
+\chapter{Chapter titles use the \texttt{chapter} command}
+
+\section{First level subheading uses \texttt{section} command}
+
+\begin{figure}
+    \centering
+    \includegraphics[width=3.5cm]{laurentian-university-coa.png}
+    \caption{Sample figure. Use the \texttt{figure} environment for figures to automatically populate in the list of figures}
+\end{figure}
+
+\subsection{Second level subheading uses \texttt{subsection} command}
+
+\chapter{Chapter titles use the \texttt{chapter} command}
+
+\section{First level subheading uses \texttt{section} command}
+
+The custom \texttt{plate} environment is added to this document. If it is not required, remove the list of plates declaration in the front matter.
+
+\begin{plate}
+    \centering
+    \includegraphics[width=3.5cm]{laurentian-university-coa.png}
+    \caption{Sample plate. Use the \texttt{plate} environment for plates to automatically populate in the list of plates}
+\end{plate}
+
+\subsection{Second level subheading uses \texttt{subsection} command}
+
+\chapter{Chapter titles use the \texttt{chapter} command}
+
+\section{First level subheading uses \texttt{section} command}
+
+Use the \texttt{equation} environment for numbered equations.
+Use \texttt{nomenclature} commands to add the symbols to nomenclature at their first use.
+
+\begin{equation}
+    A_w = \frac{\pi l}{2}\left(d_1 + d_2\right)
+\end{equation}
+
+\nomenclature[aA]{\(A\)}{Area}
+\nomenclature[ad]{\(d\)}{Diameter}
+\nomenclature[al]{\(l\)}{Segment slanted wall length}
+\nomenclature[gp]{\(\pi\)}{Dimensionless mathematical constant}
+\nomenclature[zw]{\(w\)}{Segment wall}
+\nomenclature[z1]{\(1\)}{Segment inlet}
+\nomenclature[z2]{\(2\)}{Segment outlet}
+
+\begin{equation}
+    H^{cp} = H^\ominus \exp\left[K_H\left(\frac{1}{T}-\frac{1}{T^\ominus}\right)\right]
+\end{equation}
+
+\nomenclature[aH]{\(H\)}{Henry's constant}
+\nomenclature[aK]{\(K_H\)}{Henry's constant temperature coefficient}
+\nomenclature[aT]{\(T\)}{Temperature}
+\nomenclature[xo]{\(\ominus\)}{Value at standard conditions}
+\nomenclature[xc]{\(cp\)}{Defined by concentration and pressure}
+
+The \texttt{amsmath} package provides other useful math environments.
+For example, the \texttt{gather} environment enables the grouping of equations with each equation numbered.
+\begin{gather}
+    \dot{m}_{l,1}e_{l,1} + \dot{m}_{g,1}e_{g,1} = \dot{m}_{l,2}e_{l,2} + \dot{m}_{g,2}e_{g,2} \label{eq:energy-conservation} \\
+    e_{l,k} = \frac{P_k}{\rho_{l,k}} + \frac{U^2_{l,k}}{2} + gz_k + u_{l,k} \label{eq:liquid-energy} \\
+    e_{g,k} = \frac{P_k}{\rho_{g,k}} + \frac{\left(U_{l,k}-U_{s,k}\right)^2}{2} + gz_k + u_{g,k} \label{eq:gas-energy}
+\end{gather}
+
+\subsection{Second level subheading uses \texttt{subsection} command}
+
+\chapter{Chapter titles use the \texttt{chapter} command}
+
+\section{First level subheading uses \texttt{section} command}
+
+The \texttt{natbib} package is used for formatting citations and references/bibliography section.
+Collect your references with the software of your choice (e.g., Zotero) and export your references to \texttt{BibTeX} format and add them to the \texttt{.bib} file.
+Harvard style referencing has been implemented in this template.
+See the \texttt{natbib} documentation if a different style is required.
+
+In-text citations are done with the \texttt{citet} command while parenthetical citations are done with the \texttt{citep} command.
+Example of an in-text citation: \citet{sander2015}.
+Example of an parenthetical citation: \citep{sander2015}.
+Multiple citation (in-text): \citet{sander2015,akita1974}.
+Multiple citation (parenthetical): \citep{sander2015,akita1974}.
+Citation with repeating author: \citep{millar2016,millar2018}.
+Citation with repeating author: \citet{millar2016,millar2018}.
+
+\subsection{Second level subheading uses \texttt{subsection} command}
+
+% References section
+\clearpage
+\addcontentsline{toc}{chapter}{References}
+\bibliography{unofficial-laurentian-university-thesis-latex-template}
+
+% Appendices
+\startappendices
+\newappendix{Sample Appendix}
+
+Use the \texttt{startappendices} macro to start the appendices section.
+Add appendices with the \texttt{newappendix} macro and entries in the list of appendices and table of contents will automatically generated.
+
+\clearpage % Use \clearpage to insert page break between appendices
+\newappendix{Another Appendix}
+
+\end{document}

@@ -1,0 +1,62 @@
+\input{titlepage.tex}
+
+\pagenumbering{roman}
+\pagestyle{frontmatter}
+\setcounter{page}{2}
+
+\clearpage
+\addcontentsline{toc}{chapter}{Thesis Defence Committee}
+\input{committee.tex}
+
+\doublespacing
+
+% Abstract
+\input{abstract.tex}
+% TODO Optional co-authorship statement
+% Co-authorship statement
+\input{co-authorship-statement.tex}
+
+% Acknowledgements
+\input{acknowledgements.tex}
+
+% Table of contents
+\clearpage
+\singlespacing
+\addcontentsline{toc}{chapter}{\contentsname{}}
+\tableofcontents
+
+% Lists of Tables
+\clearpage
+\addcontentsline{toc}{chapter}{\listtablename{}}
+\listoftables
+
+% List of Figures
+\clearpage
+\addcontentsline{toc}{chapter}{\listfigurename{}}
+\listoffigures
+% List of Plates
+\clearpage
+\addcontentsline{toc}{chapter}{\listplatename{}}
+\listofplates
+
+% List of Appendices
+\clearpage
+\addcontentsline{toc}{chapter}{\listappendixname{}}
+\listofappendices
+
+% Nomenclature (list of symbols)
+\printnomenclature
+\addcontentsline{toc}{chapter}{Nomenclature}
+% Set nomenclature page style to frontmatter, otherwise it will use the "plain" page style
+\thispagestyle{frontmatter}
+
+
+% TODO optional preface
+% Preface
+\clearpage
+\doublespacing
+\input{preface.tex}
+
+\clearpage
+\pagestyle{plain}
+\pagenumbering{arabic}
